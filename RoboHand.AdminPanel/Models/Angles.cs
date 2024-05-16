@@ -27,13 +27,13 @@ public class Angles
             var q3 = Math.Acos((Math.Pow(10.4, 2) + 9.7 * 9.7 - Math.Pow(d, 2)) / (2 * 10.4 * 9.7));
             var secondAngle1 = (Math.PI - q3) * (180 / (Math.PI)) + 90;
             var firstAngle1 = (q1 + q2) * (180 / (Math.PI)) + 90;
-            var thirdAngle1 = -firstAngle1 + secondAngle1 + 90;
+            var thirdAngle1 = -firstAngle1 + secondAngle1;
             return new Angles()
             {
                 Alpha = (float)firstAngle1,
                 Beta = (float)D,
                 Gamma = (float)secondAngle1,
-                Omega = (float)thirdAngle1
+                Theta = (float)thirdAngle1
             };
         }
 

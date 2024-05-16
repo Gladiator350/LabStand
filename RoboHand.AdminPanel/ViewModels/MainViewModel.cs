@@ -9,10 +9,6 @@ public partial class MainViewModel : ObservableObject
 {
     public ObservableCollection<Command> Commands { get; set; } = 
     [
-        new Command
-        {
-            Id = 2, Timestamp = 1713022877, Uid = 5
-        }
     ];
 
     public string XCorTxt { get; set ; }
