@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WpfApp23.ApplicationContexts;
 using WpfApp23.Models;
 using WpfApp23.Services;
 using WpfApp23.Services.Interfaces;
@@ -48,5 +50,9 @@ public partial class App : Application
         services.AddSingleton<IArduinoService, ArduinoService>();
         services.AddTransient(typeof(MainWindow));//
         services.AddSingleton<WebServer>();
+        services.AddDbContext<ApplicationContext>(options =>
+        {
+            options.UseSqlite("Data Source = File.db");
+        });
     }
 }

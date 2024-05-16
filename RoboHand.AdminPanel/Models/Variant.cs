@@ -2,7 +2,7 @@ namespace WpfApp23.Models;
 
 public class Variant
 {
-    public int variant { get; set; }
+    public long Id { get; set; }
     
     public int X1 { get; set; }
     

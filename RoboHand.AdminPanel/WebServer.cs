@@ -1,24 +1,19 @@
-using System.Globalization;
 using System.Net;
 using System.Net.WebSockets;
 using System.Text;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System.Windows.Documents;
+using WpfApp23.ApplicationContexts;
 using WpfApp23.Models;
-using WpfApp23.ViewModels;
 
 namespace WpfApp23
 
 {
-    class WebServer
+    public class WebServer(ApplicationContext context)
     {
-        public static int clientCount = 0;
-        public static List<String> Clients = new List<String>();
-        
-        public static async Task Start(string[] args)
+        private readonly ApplicationContext _context = context;
+        private int _clientCount = 0;
+        public async Task Start(Action<Command> actionOnReceived)
         {
+            
             var listener = new HttpListener();
             listener.Prefixes.Add("http://localhost:8080/ws/");
             listener.Start();
@@ -28,7 +23,7 @@ namespace WpfApp23
 
             try
             {
-                while (clientCount < 10)
+                while (_clientCount < 10)
                 {
                     var context = await listener.GetContextAsync();
                     if (context.Request.IsWebSocketRequest)
@@ -42,17 +37,17 @@ namespace WpfApp23
                         string clientIp = context.Request.RemoteEndPoint.ToString();
                         Console.WriteLine(clientIp);
                         // Сохраняем WebSocket клиента
-                        webSockets[clientCount++] = webSocket;
-                        Console.WriteLine(webSockets[clientCount]);
+                        webSockets[_clientCount++] = webSocket;
+                        Console.WriteLine(webSockets[_clientCount]);
 
                         // Запускаем обработку сообщений для нового клиента в отдельном потоке
-                        _ = HandleWebSocketAsync(webSocket);
+                        _ = HandleWebSocketAsync(webSocket, actionOnReceived);
                     }
                     else
                     {
                         context.Response.StatusCode = 400;
                         context.Response.Close();
-                        clientCount -= 1;
+                        _clientCount -= 1;
                     }
                 }
             }
@@ -65,8 +60,7 @@ namespace WpfApp23
                 listener.Close();
             }
         }
-        
-        static async Task HandleWebSocketAsync(WebSocket webSocket)
+        async Task HandleWebSocketAsync(WebSocket webSocket, Action<Command> actionOnReceived)
         {
             var buffer = new byte[1024 * 4];
 
@@ -81,7 +75,7 @@ namespace WpfApp23
                         if (message.Contains("cor"))
                         {
                             Angles angles = new Angles();
-                            string[] answer = message.Split("");
+                            string[] answer = message.Split(" ");
                             var anglesAlpha = angles.Alpha;
                             int intValue = 0;
                             bool successV = Int32.TryParse(answer[0], out intValue);
@@ -144,7 +138,16 @@ namespace WpfApp23
                             {
                                 Console.WriteLine("некоректная запись угла Омега");
                             }
-                            
+
+                            var command = new Command
+                            {
+                                Angles = angles,
+                                Timestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                                Uid = angles.Id
+                            };
+                            await _context.Commands.AddAsync(command);
+                            await _context.SaveChangesAsync();
+                            actionOnReceived(command);
                         }
 
                         Console.WriteLine(message);
@@ -166,13 +169,14 @@ namespace WpfApp23
                         // Закрыть соединение, если клиент отправил сообщение о закрытии
                         if (result.CloseStatus != null)
                         {
-                            clientCount -= 1;
+                            _clientCount -= 1;
                             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription,
                                 CancellationToken.None);
                         }
                             
                             
                     }
+                    
                 }
             }
             catch (Exception e)

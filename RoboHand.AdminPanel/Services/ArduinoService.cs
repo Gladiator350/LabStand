@@ -18,7 +18,7 @@ public class ArduinoService : IArduinoService
     }
     public Task SendCommand(Command command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return SendAngles(command.Angles);
     }
 
     public Task SendAngles(Angles angles)
