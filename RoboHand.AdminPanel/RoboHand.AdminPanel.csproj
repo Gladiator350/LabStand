@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>WpfApp23</RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+      <PackageReference Include="Google.Protobuf" Version="3.26.1" />
+      <PackageReference Include="Grpc" Version="2.46.6" />
+      <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.62.0" />
+      <PackageReference Include="Grpc.Core" Version="2.46.6" />
+      <PackageReference Include="Grpc.Core.Api" Version="2.62.0" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.62.0" />
+      <PackageReference Include="Grpc.Net.Client.Web" Version="2.62.0" />
+      <PackageReference Include="Grpc.Net.ClientFactory" Version="2.62.0" />
+      <PackageReference Include="Grpc.Net.Common" Version="2.62.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.63.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Diagnostics" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Diagnostics.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
+      <PackageReference Include="runtime.linux-arm.runtime.native.System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="runtime.linux-arm64.runtime.native.System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="runtime.linux-x64.runtime.native.System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="runtime.native.System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="runtime.osx-arm64.runtime.native.System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="runtime.osx-x64.runtime.native.System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="runtime.win-x64.Microsoft.NETCore.DotNetAppHost" Version="8.0.5" />
+      <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" />
+      <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+      <PackageReference Include="System.Memory" Version="4.5.5" />
+      <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
+      <PackageReference Include="System.Text.Json" Version="8.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Protos\Observer.proto" />
+      <None Remove="Protos\Compute.proto" />
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\..\..\..\Work\RiderProjects\WpfApp23\ApiCommands\commands\Compute.proto">
+        <Link>Protos\Compute.proto</Link>
+      </Content>
+      <Content Include="..\..\..\..\..\Work\RiderProjects\WpfApp23\ApiCommands\commands\Observer.proto">
+        <Link>Protos\Observer.proto</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="images\Background.jpg" />
+      <Resource Include="images\Background.jpg" />
+      <None Remove="images\eventFrame.png" />
+      <Resource Include="images\eventFrame.png" />
+    </ItemGroup>
+
+</Project>
