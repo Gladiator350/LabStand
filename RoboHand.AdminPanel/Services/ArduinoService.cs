@@ -12,9 +12,9 @@ public class ArduinoService : IArduinoService
 
     public ArduinoService(IOptions<ArduinoSettings> options)
     {
-        _serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
-        _serialPort.ReadTimeout = 2000;
-        _serialPort.Open();
+        // _serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
+        // _serialPort.ReadTimeout = 2000;
+        // _serialPort.Open();
     }
     public Task SendCommand(Command command, CancellationToken cancellationToken = default)
     {

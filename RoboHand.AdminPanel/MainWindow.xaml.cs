@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp23.ApplicationContexts;
+using WpfApp23.Calculate;
 using WpfApp23.Models;
 using WpfApp23.Services.Interfaces;
 using WpfApp23.ViewModels;
@@ -50,7 +51,8 @@ public partial class MainWindow : Window
     {
         if(_selectedItem is null)
             return;
-        _arduinoService.SendCommand(_selectedItem);
+        //_arduinoService.SendCommand(_selectedItem);
+        _arduinoService.SendAngles(AnglesCalculator.Recalculate(_selectedItem.Angles, _context.Variants.First(x => x.Id == _selectedItem.Uid)  ) );
     }
 
     private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -62,8 +64,8 @@ public partial class MainWindow : Window
     }
     private void CoordinateButtonCommand()
     {
-        var angles = Angles.FromCoordinates(_vm.XCor, _vm.YCor, _vm.ZCor);
-        _arduinoService.SendAngles(angles);
+        var anglescord = Angles.FromCoordinates(_vm.XCor, _vm.YCor, _vm.ZCor);
+        _arduinoService.SendAngles(anglescord);
     }
 
     private void DeleteButtonClick()

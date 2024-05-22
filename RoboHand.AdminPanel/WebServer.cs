@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using WpfApp23.ApplicationContexts;
+using WpfApp23.Calculate;
 using WpfApp23.Models;
 
 namespace WpfApp23
@@ -15,7 +16,7 @@ namespace WpfApp23
         {
             
             var listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:8080/ws/");
+            listener.Prefixes.Add("http://127.0.0.1:8080/");
             listener.Start();
             Console.WriteLine("Listening...");
 
@@ -45,9 +46,9 @@ namespace WpfApp23
                     }
                     else
                     {
+                        Console.WriteLine("не получилось");
                         context.Response.StatusCode = 400;
                         context.Response.Close();
-                        _clientCount -= 1;
                     }
                 }
             }
@@ -145,12 +146,13 @@ namespace WpfApp23
                                 Timestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                                 Uid = angles.Id
                             };
+                            Console.WriteLine(AnglesCalculator.Check(angles, _context.Variants.First(x => x.Id == angles.Id)));
                             await _context.Commands.AddAsync(command);
                             await _context.SaveChangesAsync();
                             actionOnReceived(command);
                         }
 
-                        Console.WriteLine(message);
+                        
                         
 
                         // Эхо-ответ клиенту
@@ -159,7 +161,7 @@ namespace WpfApp23
                             WebSocketMessageType.Text,
                             endOfMessage: true,
                             cancellationToken: CancellationToken.None);
-
+                            
                         Console.WriteLine("Sent: " + message);
                         var i = +1;
                         //Console.WriteLine(Clients);

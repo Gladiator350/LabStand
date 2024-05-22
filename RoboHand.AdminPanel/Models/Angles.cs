@@ -12,9 +12,10 @@ public class Angles
     public static Angles FromCoordinates(double x, double y, double z)
     {
         //double d1;
+        Console.WriteLine($"{x} {y} {z}");
         const double l1 = 10.4; 
         const double l2 = 9.7;
-        x += 8.5;
+        x = x + 8.5;
         double D = Math.Atan(y / x) * (180 / (Math.PI)) + 90;
         x = x - Math.Abs(11 * Math.Cos((D - 90) / (180 / Math.PI)));
         y = Math.Abs(y) - Math.Abs(11 * Math.Sin((D - 90) / (180 / Math.PI)));
@@ -27,13 +28,15 @@ public class Angles
             var q3 = Math.Acos((Math.Pow(10.4, 2) + 9.7 * 9.7 - Math.Pow(d, 2)) / (2 * 10.4 * 9.7));
             var secondAngle1 = (Math.PI - q3) * (180 / (Math.PI)) + 90;
             var firstAngle1 = (q1 + q2) * (180 / (Math.PI)) + 90;
-            var thirdAngle1 = -firstAngle1 + secondAngle1;
+            var thirdAngle1 = -firstAngle1 + secondAngle1 + 90;
+            Console.WriteLine($"1: {firstAngle1} 2: {secondAngle1} 3: {thirdAngle1} 4: {D}");
             return new Angles()
             {
                 Alpha = (float)firstAngle1,
-                Beta = (float)D,
-                Gamma = (float)secondAngle1,
-                Theta = (float)thirdAngle1
+                Beta = (float)secondAngle1,
+                Gamma = (float)thirdAngle1,
+                Theta = (float)D,
+                Omega = 0
             };
         }
 
