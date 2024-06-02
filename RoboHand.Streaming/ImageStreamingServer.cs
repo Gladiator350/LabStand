@@ -50,13 +50,13 @@ namespace RoboHand.Streaming
         /// Returns the status of the server. True means the server is currently 
         /// running and ready to serve any client requests.
         /// </summary>
-        public bool IsRunning { get { return (_Thread != null && _Thread.IsAlive); } }
+        public bool IsRunning => _Thread is { IsAlive: true };
 
         /// <summary>
         /// Starts the server to accepts any new connections on the specified port.
         /// </summary>
         /// <param name="port"></param>
-        public void Start(int port)
+        public void Start(int port = 8080)
         {
 
             lock (this)
@@ -66,14 +66,6 @@ namespace RoboHand.Streaming
                 _Thread.Start(port);
             }
 
-        }
-
-        /// <summary>
-        /// Starts the server to accepts any new connections on the default port (8080).
-        /// </summary>
-        public void Start()
-        {
-            this.Start(8080);
         }
 
         public void Stop()
@@ -98,8 +90,7 @@ namespace RoboHand.Streaming
                         _Clients.Clear();
 
                     }
-                    //_Thread.Join();
-                    //_Thread.Abort();
+                    _Thread.Join();
                 }
                 finally
                 {
@@ -139,7 +130,7 @@ namespace RoboHand.Streaming
                 Server.Bind(new IPEndPoint(IPAddress.Any,(int)state));
                 Server.Listen(10);
 
-                System.Diagnostics.Debug.WriteLine(string.Format("Server started on port {0}.", state));
+                Console.WriteLine($"Server started on port {state}.");
                 foreach (Socket client in Server.IncommingConnectoins())
                 {
                     if (_Thread.ThreadState == ThreadState.AbortRequested) break;
@@ -179,7 +170,7 @@ namespace RoboHand.Streaming
         {
 
             Socket socket = (Socket)client;
-            System.Diagnostics.Debug.WriteLine(string.Format("New client from {0}",socket.RemoteEndPoint.ToString()));
+            Console.WriteLine($"New client from {socket.RemoteEndPoint.ToString()}");
 
             lock (_Clients)
                 _Clients.Add(socket);
@@ -193,14 +184,12 @@ namespace RoboHand.Streaming
                     wr.WriteHeader();
 
                     // Streams the images from the source to the client.
-                    var ms = new MemoryStream();
-                    foreach (var img in ImagesSource)
+                    foreach (var img in ImagesSource.Streams())
                     {
                         if (this.Interval > 0)
                             Thread.Sleep(this.Interval);
-                        ms.SetLength(0);
-                        ms.Write(img);
-                        wr.Write(ms);
+                        
+                        wr.Write(img);
                     }
 
                 }
@@ -226,13 +215,30 @@ namespace RoboHand.Streaming
         #endregion
     }
 
-    static class SocketExtensions
+    static class Extensions
     {
 
         public static IEnumerable<Socket> IncommingConnectoins(this Socket server)
         {
             while(true)
                 yield return server.Accept();
+        }
+        
+        internal static IEnumerable<MemoryStream> Streams(this IEnumerable<byte[]> source)
+        {
+            MemoryStream ms = new MemoryStream();
+
+            foreach (var img in source)
+            {
+                ms.SetLength(0);
+                ms.Write(img);
+                yield return ms;
+            }
+
+            ms.Close();
+            ms = null;
+
+            yield break;
         }
 
     }

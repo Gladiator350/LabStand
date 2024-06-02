@@ -13,8 +13,9 @@ public class ArucoDetection
     {
         #region Initialize video capture object on default webcam (0)
         // Instantiate a webcam abstraction
-        VideoCapture capture;
-        capture = new VideoCapture(0);
+        var capture = new VideoCapture(0);
+        capture.Set(CapProp.FrameWidth, 1920);
+        capture.Set(CapProp.FrameHeight, 1080);
         #endregion
 
         #region Initialize and save Aruco dictionary and gridboard
@@ -62,8 +63,8 @@ public class ArucoDetection
                     
                 }
 
-                yield return frame.ToImage<Bgr, byte>().ToJpegData();
-                Thread.Sleep(100);
+                yield return frame.Clone().ToImage<Bgr, byte>().ToJpegData();
+                Thread.Sleep(24);
             }
         }
         #endregion
