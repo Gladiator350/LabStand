@@ -16,7 +16,7 @@ namespace WpfApp23
         {
             
             var listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:8080/");
+            listener.Prefixes.Add("http://+:8080/");
             listener.Start();
             Console.WriteLine("Listening...");
 
@@ -73,91 +73,43 @@ namespace WpfApp23
                     if (result.MessageType == WebSocketMessageType.Text)
                     {
                         var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                        if (message.Contains("cor"))
+                        var textToSend = "";
+                        
+                        var commandAngles = message.Split("cor");
+                        if (message.StartsWith("cor"))
                         {
-                            Angles angles = new Angles();
-                            string[] answer = message.Split(" ");
-                            var anglesAlpha = angles.Alpha;
-                            int intValue = 0;
-                            bool successV = Int32.TryParse(answer[0], out intValue);
-                            if (successV)
+                            
+                            if (!int.TryParse(commandAngles[0], out int Uid))
                             {
-                                angles.Id = intValue;
+                                Console.WriteLine("Отсутствует вариант");
+                                continue;
                             }
-                            else
+                            var angles = new List<Angles>();
+                            foreach (var commandAngle in commandAngles)
                             {
-                                Console.WriteLine("некоректная запись Варианта");
+                                angles.Add(Angles.FromCommandText(commandAngle));
                             }
-
-                            float floatValue = 0;
-                            bool successA = float.TryParse(answer[2], out floatValue);
-                            if (successA)
-                            {
-                                angles.Alpha = floatValue;
-                            }
-                            else
-                            {
-                                Console.WriteLine("некоректная запись угла Альфа");
-                            }
-
-                            successA = float.TryParse(answer[3], out floatValue);
-                            if (successA)
-                            {
-                                angles.Beta = floatValue;
-                            }
-                            else
-                            {
-                                Console.WriteLine("некоректная запись угла Бетта");
-                            }
-
-                            successA = float.TryParse(answer[4], out floatValue);
-                            if (successA)
-                            {
-                                angles.Gamma = floatValue;
-                            }
-                            else
-                            {
-                                Console.WriteLine("некоректная запись угла Гамма");
-                            }
-
-                            successA = float.TryParse(answer[5], out floatValue);
-                            if (successA)
-                            {
-                                angles.Theta = floatValue;
-                            }
-                            else
-                            {
-                                Console.WriteLine("некоректная запись угла Тетта");
-                            }
-
-                            successA = float.TryParse(answer[6], out floatValue);
-                            if (successA)
-                            {
-                                angles.Omega = floatValue;
-                            }
-                            else
-                            {
-                                Console.WriteLine("некоректная запись угла Омега");
-                            }
-
                             var command = new Command
                             {
-                                Angles = angles,
+                                Angles = angles.ToArray(),
                                 Timestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
-                                Uid = angles.Id
+                                Uid = Uid
                             };
-                            Console.WriteLine(AnglesCalculator.Check(angles, _context.Variants.First(x => x.Id == angles.Id)));
+                            //textToSend += AnglesCalculator.Check(angles, _context.Variants.First(x => x.Id == angles.Id)).ToString();
+                            Console.WriteLine(textToSend);
                             await _context.Commands.AddAsync(command);
                             await _context.SaveChangesAsync();
                             actionOnReceived(command);
                         }
-
+                        byte[] textBytes = Encoding.UTF8.GetBytes(textToSend);
+                        Console.WriteLine(textBytes);
+                        byte[] combinedBuffer = new byte[buffer.Length + textBytes.Length];
+                        Buffer.BlockCopy(buffer, 0, combinedBuffer, 0, buffer.Length);
+                        Buffer.BlockCopy(textBytes, 0, combinedBuffer, buffer.Length, textBytes.Length);
                         
-                        
-
                         // Эхо-ответ клиенту
                         await webSocket.SendAsync(
-                            new ArraySegment<byte>(buffer, 0, result.Count),
+                            new ArraySegment<byte>(combinedBuffer, 0, combinedBuffer.Length),
                             WebSocketMessageType.Text,
                             endOfMessage: true,
                             cancellationToken: CancellationToken.None);

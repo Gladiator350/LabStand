@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboHand.AdminPanel", "RoboHand.AdminPanel\RoboHand.AdminPanel.csproj", "{A0FD6841-E1EF-42FD-AE08-29A35BA58CC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboHand.Streaming", "RoboHand.Streaming\RoboHand.Streaming.csproj", "{E1396300-7F77-4A75-94A5-63BFF4E223B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboHand.Aruco", "RoboHand.Aruco\RoboHand.Aruco.csproj", "{D3B85976-B872-4056-A44A-1D8B28AD599E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{A0FD6841-E1EF-42FD-AE08-29A35BA58CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FD6841-E1EF-42FD-AE08-29A35BA58CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FD6841-E1EF-42FD-AE08-29A35BA58CC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1396300-7F77-4A75-94A5-63BFF4E223B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1396300-7F77-4A75-94A5-63BFF4E223B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1396300-7F77-4A75-94A5-63BFF4E223B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1396300-7F77-4A75-94A5-63BFF4E223B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3B85976-B872-4056-A44A-1D8B28AD599E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3B85976-B872-4056-A44A-1D8B28AD599E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3B85976-B872-4056-A44A-1D8B28AD599E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3B85976-B872-4056-A44A-1D8B28AD599E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>RoboHand.Aruco</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Emgu.CV" Version="4.9.0.5494" />
+      <PackageReference Include="Emgu.CV.runtime.windows" Version="4.9.0.5494" />
+      <PackageReference Include="Emgu.CV.UI" Version="4.9.0.5494" />
+    </ItemGroup>
+
+</Project>

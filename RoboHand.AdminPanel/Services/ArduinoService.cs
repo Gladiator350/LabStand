@@ -12,32 +12,35 @@ public class ArduinoService : IArduinoService
 
     public ArduinoService(IOptions<ArduinoSettings> options)
     {
-        // _serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
-        // _serialPort.ReadTimeout = 2000;
-        // _serialPort.Open();
+        /*_serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
+        _serialPort.ReadTimeout = 2000;
+        _serialPort.Open();*/
     }
-    public Task SendCommand(Command command, CancellationToken cancellationToken = default)
+    public async Task SendCommand(Command command, CancellationToken cancellationToken = default)
     {
-        return SendAngles(command.Angles);
+        foreach (var angles in command.Angles)
+        {
+            await SendAngles(angles);
+        }
     }
 
     public Task SendAngles(Angles angles)
     {
-    _serialPort.WriteLine(angles.ToCommandString());
-    string answerMessage = angles.ToCommandString().Replace("cor", "fin");
-    try
-    {
-        var message = _serialPort.ReadLine().Trim();
-        if (answerMessage == message)
+        _serialPort.WriteLine(angles.ToCommandString());
+        string answerMessage = angles.ToCommandString().Replace("cor", "fin");
+        try
         {
-            return Task.CompletedTask;
+            var message = _serialPort.ReadLine().Trim();
+            if (answerMessage == message)
+            {
+                return Task.CompletedTask;
+            }
+        
+            throw new Exception("Неверный ответ");
         }
-    
-        throw new Exception("Неверный ответ");
-    }
-    catch (Exception e)
-    {
-        return Task.FromException(e);
-    }
+        catch (Exception e)
+        {
+            return Task.FromException(e);
+        }
     }
 }

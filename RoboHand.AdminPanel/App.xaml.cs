@@ -3,6 +3,8 @@ using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RoboHand.Aruco;
+using RoboHand.Streaming;
 using WpfApp23.ApplicationContexts;
 using WpfApp23.Models;
 using WpfApp23.Services;
@@ -30,6 +32,8 @@ public partial class App : Application
     public IServiceProvider? ServiceProvider { get; private set; }
     public IConfiguration? Configuration { get; private set; }
     
+    public ImageStreamingServer Server { get; private set; }
+    
     protected override void OnStartup(StartupEventArgs e)
     {
         var builder = new ConfigurationBuilder()
@@ -39,6 +43,8 @@ public partial class App : Application
         var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
         ServiceProvider = serviceCollection.BuildServiceProvider();
+        Server = new ImageStreamingServer(ArucoDetection.Start());
+        Server.Start();
         var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
     }

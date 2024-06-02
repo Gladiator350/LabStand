@@ -83,4 +83,9 @@
       <Resource Include="images\eventFrame.png" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RoboHand.Aruco\RoboHand.Aruco.csproj" />
+      <ProjectReference Include="..\RoboHand.Streaming\RoboHand.Streaming.csproj" />
+    </ItemGroup>
+
 </Project>

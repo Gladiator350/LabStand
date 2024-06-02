@@ -43,4 +43,74 @@ public class Angles
         throw new ArgumentException("Невозможные координаты");
 
     }
+
+    public static Angles FromCommandText(string message)
+    {
+        Angles angles = new Angles();
+        string[] answer = message.Split(" ");
+        var anglesAlpha = angles.Alpha;
+        int intValue = 0;
+        bool successV = Int32.TryParse(answer[0], out intValue);
+        if (successV)
+        {
+            angles.Id = intValue;// 1 cor 25 40 25 67 65 cor 25 40 25 67 65 cor 25 40 25 67 65
+        }
+        else
+        {
+            Console.WriteLine("некоректная запись Варианта");
+        }
+
+        float floatValue = 0;
+        bool successA = float.TryParse(answer[2], out floatValue);
+        if (successA)
+        {
+            angles.Alpha = floatValue;
+        }
+        else
+        {
+            Console.WriteLine("некоректная запись угла Альфа");
+        }
+
+        successA = float.TryParse(answer[3], out floatValue);
+        if (successA)
+        {
+            angles.Beta = floatValue;
+        }
+        else
+        {
+            Console.WriteLine("некоректная запись угла Бетта");
+        }
+
+        successA = float.TryParse(answer[4], out floatValue);
+        if (successA)
+        {
+            angles.Gamma = floatValue;
+        }
+        else
+        {
+            Console.WriteLine("некоректная запись угла Гамма");
+        }
+
+        successA = float.TryParse(answer[5], out floatValue);
+        if (successA)
+        {
+            angles.Theta = floatValue;
+        }
+        else
+        {
+            Console.WriteLine("некоректная запись угла Тетта");
+        }
+
+        successA = float.TryParse(answer[6], out floatValue);
+        if (successA)
+        {
+            angles.Omega = floatValue;
+        }
+        else
+        {
+            Console.WriteLine("некоректная запись угла Омега");
+        }
+
+        return angles;
+    }
 }

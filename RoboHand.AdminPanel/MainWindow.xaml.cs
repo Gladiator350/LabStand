@@ -51,8 +51,9 @@ public partial class MainWindow : Window
     {
         if(_selectedItem is null)
             return;
-        //_arduinoService.SendCommand(_selectedItem);
-        _arduinoService.SendAngles(AnglesCalculator.Recalculate(_selectedItem.Angles, _context.Variants.First(x => x.Id == _selectedItem.Uid)  ) );
+        _arduinoService.SendCommand(_selectedItem);
+        //_arduinoService.SendAngles(AnglesCalculator.Recalculate(_selectedItem.Angles, _context.Variants.First(x => x.Id == _selectedItem.Uid)));
+        
     }
 
     private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
