@@ -29,6 +29,8 @@ public partial class MainViewModel : ObservableObject
     private RelayCommand? _executeButtonCommand;
     [ObservableProperty]
     private RelayCommand? _coordinateButtonCommand;
+    [ObservableProperty]
+    private RelayCommand? _demoButtonCommand;
 
     [ObservableProperty] private RelayCommand? _deleteButtonCommand;
 }

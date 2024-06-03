@@ -16,7 +16,7 @@ namespace WpfApp23
         {
             
             var listener = new HttpListener();
-            listener.Prefixes.Add("http://+:8080/");
+            listener.Prefixes.Add("http://127.0.0.1:8080/");
             listener.Start();
             Console.WriteLine("Listening...");
 
@@ -76,7 +76,7 @@ namespace WpfApp23
                         var textToSend = "";
                         
                         var commandAngles = message.Split("cor");
-                        if (message.StartsWith("cor"))
+                        if (message.Contains("cor"))
                         {
                             
                             if (!int.TryParse(commandAngles[0], out int Uid))
@@ -85,13 +85,13 @@ namespace WpfApp23
                                 continue;
                             }
                             var angles = new List<Angles>();
-                            foreach (var commandAngle in commandAngles)
+                            foreach (var commandAngle in commandAngles[1..])
                             {
                                 angles.Add(Angles.FromCommandText(commandAngle));
                             }
                             var command = new Command
                             {
-                                Angles = angles.ToArray(),
+                                Angles = angles,
                                 Timestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                                 Uid = Uid
                             };

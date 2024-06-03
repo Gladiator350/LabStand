@@ -27,6 +27,7 @@ public partial class MainWindow : Window
         _vm.ExecuteButtonCommand = new RelayCommand(ExecuteButtonClick);
         _vm.CoordinateButtonCommand = new RelayCommand(CoordinateButtonCommand);
         _vm.DeleteButtonCommand = new RelayCommand(DeleteButtonClick);
+        _vm.DemoButtonCommand = new RelayCommand(DemoButtonCommand);
         CommandsList.SelectedItem = _vm.Commands.FirstOrDefault();
         foreach (var command in context.Commands)
         {   
@@ -67,6 +68,51 @@ public partial class MainWindow : Window
     {
         var anglescord = Angles.FromCoordinates(_vm.XCor, _vm.YCor, _vm.ZCor);
         _arduinoService.SendAngles(anglescord);
+    }
+    private void DemoButtonCommand()
+    {
+        System.Net.WebClient htmlClient = new System.Net.WebClient();
+        string htmlString = htmlClient.DownloadString("http://127.0.0.1:8000/data.html");
+        if (htmlString.Contains("marker22"))
+        {
+            string[] values = htmlString.Split(' ');
+            double x = Double.Parse(values[values.Length - 3]);
+            double y = Double.Parse(values[values.Length - 2]);
+            double z = 0;
+            var anglescord = Angles.FromCoordinates(x, y, z);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            anglescord = Angles.FromCoordinates(x, y, -6);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            // добавить захват
+            anglescord = Angles.FromCoordinates(x, y, z);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            anglescord = Angles.FromCoordinates(18, 0, -4);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            // разжать захват
+            x = Double.Parse(values[values.Length - 6]);
+            y = Double.Parse(values[values.Length - 5]);
+            anglescord = Angles.FromCoordinates(x, y, 0);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            anglescord = Angles.FromCoordinates(x, y, -5);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            // добавить захват
+            anglescord = Angles.FromCoordinates(18, 0, 0);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            // разжать захват
+            anglescord = Angles.FromCoordinates(18, 0, 5);
+            _arduinoService.SendAngles(anglescord);
+            Thread.Sleep(2000);
+            anglescord = Angles.FromCoordinates(10, 0, 0);
+            _arduinoService.SendAngles(anglescord);
+        }
+        
     }
 
     private void DeleteButtonClick()

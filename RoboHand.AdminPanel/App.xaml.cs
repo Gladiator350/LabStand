@@ -43,8 +43,8 @@ public partial class App : Application
         var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
         ServiceProvider = serviceCollection.BuildServiceProvider();
-        Server = new ImageStreamingServer(ArucoDetection.Start());
-        Server.Start();
+        /*Server = new ImageStreamingServer(ArucoDetection.Start());
+        Server.Start();*/
         var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
     }

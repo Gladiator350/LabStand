@@ -12,14 +12,15 @@ public class ArduinoService : IArduinoService
 
     public ArduinoService(IOptions<ArduinoSettings> options)
     {
-        /*_serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
+        _serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
         _serialPort.ReadTimeout = 2000;
-        _serialPort.Open();*/
+        /*_serialPort.Open();*/
     }
     public async Task SendCommand(Command command, CancellationToken cancellationToken = default)
     {
         foreach (var angles in command.Angles)
         {
+            Console.WriteLine(angles.ToCommandString());
             await SendAngles(angles);
         }
     }
@@ -27,7 +28,7 @@ public class ArduinoService : IArduinoService
     public Task SendAngles(Angles angles)
     {
         _serialPort.WriteLine(angles.ToCommandString());
-        string answerMessage = angles.ToCommandString().Replace("cor", "fin");
+        string answerMessage = angles.ToCommandString().Replace("cor", "fin").Replace("srv", "fin");
         try
         {
             var message = _serialPort.ReadLine().Trim();

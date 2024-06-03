@@ -45,5 +45,7 @@
         </TextBox>
         <Button Command="{Binding CoordinateButtonCommand}" Content="Отправить координаты" Width="auto"  Height="100" FontSize="20" BorderBrush="{x:Null}" Background="{x:Null}"  Grid.Row="1" Grid.Column="3">
         </Button>
+        <Button Command="{Binding DemoButtonCommand}" Content="Start demo" Width="auto"  Height="100" FontSize="20" BorderBrush="{x:Null}" Background="{x:Null}"  Grid.Row="4" Grid.Column="3">
+        </Button>
     </Grid>
 </Window>

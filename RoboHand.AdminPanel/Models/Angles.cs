@@ -61,7 +61,7 @@ public class Angles
         }
 
         float floatValue = 0;
-        bool successA = float.TryParse(answer[2], out floatValue);
+        bool successA = float.TryParse(answer[1], out floatValue);
         if (successA)
         {
             angles.Alpha = floatValue;
@@ -71,7 +71,7 @@ public class Angles
             Console.WriteLine("некоректная запись угла Альфа");
         }
 
-        successA = float.TryParse(answer[3], out floatValue);
+        successA = float.TryParse(answer[2], out floatValue);
         if (successA)
         {
             angles.Beta = floatValue;
@@ -81,7 +81,7 @@ public class Angles
             Console.WriteLine("некоректная запись угла Бетта");
         }
 
-        successA = float.TryParse(answer[4], out floatValue);
+        successA = float.TryParse(answer[3], out floatValue);
         if (successA)
         {
             angles.Gamma = floatValue;
@@ -91,7 +91,7 @@ public class Angles
             Console.WriteLine("некоректная запись угла Гамма");
         }
 
-        successA = float.TryParse(answer[5], out floatValue);
+        successA = float.TryParse(answer[4], out floatValue);
         if (successA)
         {
             angles.Theta = floatValue;
@@ -101,7 +101,7 @@ public class Angles
             Console.WriteLine("некоректная запись угла Тетта");
         }
 
-        successA = float.TryParse(answer[6], out floatValue);
+        successA = float.TryParse(answer[5], out floatValue);
         if (successA)
         {
             angles.Omega = floatValue;

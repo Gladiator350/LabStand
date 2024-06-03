@@ -15,6 +15,6 @@ public class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /*modelBuilder.Entity<Command>().ComplexProperty(p => p.Angles);*/
+        modelBuilder.Entity<Command>().Navigation(p => p.Angles).AutoInclude();
     }
 }
