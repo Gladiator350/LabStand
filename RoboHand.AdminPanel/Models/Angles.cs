@@ -17,8 +17,8 @@ public class Angles
         const double l2 = 9.7;
         x = x + 8.5;
         double D = Math.Atan(y / x) * (180 / (Math.PI)) + 90;
-        x = x - Math.Abs(11 * Math.Cos((D - 90) / (180 / Math.PI)));
-        y = Math.Abs(y) - Math.Abs(11 * Math.Sin((D - 90) / (180 / Math.PI)));
+        x = x - Math.Abs(10 * Math.Cos((D - 90) / (180 / Math.PI)));
+        y = Math.Abs(y) - Math.Abs(10 * Math.Sin((D - 90) / (180 / Math.PI)));
         if ((Math.Pow(x, 2) + Math.Pow(z, 2) + Math.Pow(y, 2)) <= Math.Pow(l1 + l2, 2))
         {
             var dy = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));

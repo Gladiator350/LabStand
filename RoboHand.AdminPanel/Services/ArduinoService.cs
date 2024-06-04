@@ -1,4 +1,5 @@
 ﻿using System.IO.Ports;
+using System.Windows;
 using Microsoft.Extensions.Options;
 using WpfApp23.Extensions;
 using WpfApp23.Models;
@@ -13,8 +14,8 @@ public class ArduinoService : IArduinoService
     public ArduinoService(IOptions<ArduinoSettings> options)
     {
         _serialPort = new SerialPort(options.Value.Port, options.Value.BaudRate);
-        _serialPort.ReadTimeout = 2000;
-        /*_serialPort.Open();*/
+        _serialPort.ReadTimeout = 18000;
+        _serialPort.Open();
     }
     public async Task SendCommand(Command command, CancellationToken cancellationToken = default)
     {
@@ -28,19 +29,32 @@ public class ArduinoService : IArduinoService
     public Task SendAngles(Angles angles)
     {
         _serialPort.WriteLine(angles.ToCommandString());
-        string answerMessage = angles.ToCommandString().Replace("cor", "fin").Replace("srv", "fin");
+        string answerMessage = angles.ToAnswerString().Replace("cor", "fin").Replace("srv", "fin");
+        Console.WriteLine(answerMessage);
         try
         {
-            var message = _serialPort.ReadLine().Trim();
-            if (answerMessage == message)
+            var message = "0";
+            do
             {
-                return Task.CompletedTask;
-            }
-        
+                message = _serialPort.ReadLine().Trim();
+                //Console.WriteLine(message);
+                if (answerMessage == message)
+                {
+                    Console.WriteLine("ok");
+                    return Task.CompletedTask;
+                }
+
+                if (message.Length > 0)
+                {
+                    Console.WriteLine(string.Format("received from ardu: {0}", message));
+                }
+            } while (!message.Contains(answerMessage));
+            Console.WriteLine("After while");
             throw new Exception("Неверный ответ");
         }
         catch (Exception e)
         {
+            MessageBox.Show($"ardu read eaxception: {e.Message}" );
             return Task.FromException(e);
         }
     }
