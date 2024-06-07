@@ -16,7 +16,7 @@ namespace WpfApp23
         {
             
             var listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:8080/");
+            listener.Prefixes.Add("http://+:8080/");
             listener.Start();
             Console.WriteLine("Listening...");
 

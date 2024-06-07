@@ -55,7 +55,7 @@ public class ArduinoService : IArduinoService
         catch (Exception e)
         {
             MessageBox.Show($"ardu read eaxception: {e.Message}" );
-            return Task.FromException(e);
+            return Task.CompletedTask;
         }
     }
 }
