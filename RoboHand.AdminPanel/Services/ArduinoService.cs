@@ -38,7 +38,30 @@ public class ArduinoService : IArduinoService
             {
                 message = _serialPort.ReadLine().Trim();
                 //Console.WriteLine(message);
+                int[] answerAngles = new int[] {0, 0, 0, 0};
+                int[] checkAngles = new int[] { 0, 0, 0, 0 };
+                var numbermessage = message.Split(' ');
+                if (numbermessage.Length == 5)
+                {
+                    answerAngles[0] = Convert.ToInt32(numbermessage[1]);
+                    answerAngles[1] = Convert.ToInt32(numbermessage[2]);
+                    answerAngles[2] = Convert.ToInt32(numbermessage[3]);
+                    answerAngles[3] = Convert.ToInt32(numbermessage[4]);
+                }
+                var checkMessages = answerMessage.Split(' ');
+                if (checkMessages.Length == 5)
+                {
+                    checkAngles[0] = Convert.ToInt32(numbermessage[1]);
+                    checkAngles[1] = Convert.ToInt32(numbermessage[2]);
+                    checkAngles[2] = Convert.ToInt32(numbermessage[3]);
+                    checkAngles[3] = Convert.ToInt32(numbermessage[4]);
+                }
                 if (answerMessage == message)
+                {
+                    Console.WriteLine("ok");
+                    return Task.CompletedTask;
+                }
+                if (Math.Abs(answerAngles[0] - checkAngles[0]) <= 1 && Math.Abs(answerAngles[1] - checkAngles[1]) <= 1 && Math.Abs(answerAngles[2] - checkAngles[2]) <= 1 && Math.Abs(answerAngles[3] - checkAngles[3]) <= 1)
                 {
                     Console.WriteLine("ok");
                     return Task.CompletedTask;

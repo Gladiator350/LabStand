@@ -1,4 +1,6 @@
-﻿namespace WpfApp23.Models;
+﻿using System.Globalization;
+
+namespace WpfApp23.Models;
 
 public class Angles
 {
@@ -16,10 +18,10 @@ public class Angles
         const double l1 = 10.4; 
         const double l2 = 9.7;
         x = x + 8.5;
-        double D = Math.Atan(y / x) * (180 / (Math.PI)) + 90;
+        double D = Math.Atan(y / x) * (180 / (Math.PI)) + 90 - 4;
         x = x - Math.Abs(10 * Math.Cos((D - 90) / (180 / Math.PI)));
         y = Math.Abs(y) - Math.Abs(10 * Math.Sin((D - 90) / (180 / Math.PI)));
-        if ((Math.Pow(x, 2) + Math.Pow(z, 2) + Math.Pow(y, 2)) <= Math.Pow(l1 + l2, 2))
+        if ((Math.Pow(x, 2) + Math.Pow(z, 2) + Math.Pow(y, 2)) <= Math.Pow(l1 + l2 + Math.Abs(10 * Math.Cos((D - 90) / (180 / Math.PI))), 2))
         {
             var dy = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
             var d = Math.Sqrt(Math.Pow(dy, 2) + Math.Pow(z, 2));
@@ -48,67 +50,52 @@ public class Angles
     {
         Angles angles = new Angles();
         string[] answer = message.Split(" ");
-        var anglesAlpha = angles.Alpha;
-        int intValue = 0;
-        bool successV = Int32.TryParse(answer[0], out intValue);
-        if (successV)
-        {
-            angles.Id = intValue;// 1 cor 25 40 25 67 65 cor 25 40 25 67 65 cor 25 40 25 67 65
-        }
-        else
-        {
-            Console.WriteLine("некоректная запись Варианта");
-        }
 
         float floatValue = 0;
-        bool successA = float.TryParse(answer[1], out floatValue);
-        if (successA)
+
+        if (float.TryParse(answer[0], CultureInfo.InvariantCulture, out floatValue))
         {
             angles.Alpha = floatValue;
         }
         else
         {
-            Console.WriteLine("некоректная запись угла Альфа");
+            Console.WriteLine("некорректная запись угла Альфа");
         }
 
-        successA = float.TryParse(answer[2], out floatValue);
-        if (successA)
+        if (float.TryParse(answer[1], CultureInfo.InvariantCulture, out floatValue))
         {
             angles.Beta = floatValue;
         }
         else
         {
-            Console.WriteLine("некоректная запись угла Бетта");
+            Console.WriteLine("некорректная запись угла Бетта");
         }
 
-        successA = float.TryParse(answer[3], out floatValue);
-        if (successA)
+        if (float.TryParse(answer[2], CultureInfo.InvariantCulture, out floatValue))
         {
             angles.Gamma = floatValue;
         }
         else
         {
-            Console.WriteLine("некоректная запись угла Гамма");
+            Console.WriteLine("некорректная запись угла Гамма");
         }
 
-        successA = float.TryParse(answer[4], out floatValue);
-        if (successA)
+        if (float.TryParse(answer[3], CultureInfo.InvariantCulture, out floatValue))
         {
             angles.Theta = floatValue;
         }
         else
         {
-            Console.WriteLine("некоректная запись угла Тетта");
+            Console.WriteLine("некорректная запись угла Тетта");
         }
 
-        successA = float.TryParse(answer[5], out floatValue);
-        if (successA)
+        if (float.TryParse(answer[4], CultureInfo.InvariantCulture, out floatValue))
         {
             angles.Omega = floatValue;
         }
         else
         {
-            Console.WriteLine("некоректная запись угла Омега");
+            Console.WriteLine("некорректная запись угла Омега");
         }
 
         return angles;

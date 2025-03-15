@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp23.ApplicationContexts;
@@ -43,6 +44,7 @@ public partial class MainWindow : Window
             {
                 _vm.Commands.Add(x);
             });
+            Console.WriteLine("Запущен сервер");
         }
 
         _ = PerformTaskAsync();
@@ -72,12 +74,12 @@ public partial class MainWindow : Window
     private void DemoButtonCommand()
     {
         System.Net.WebClient htmlClient = new System.Net.WebClient();
-        string htmlString = htmlClient.DownloadString("http://127.0.0.1:8000/data.html");
+        string htmlString = htmlClient.DownloadString("http://127.0.0.1:8070/data.html");
         if (htmlString.Contains("marker22"))
         {
             string[] values = htmlString.Split(' ');
-            double x = Double.Parse(values[values.Length - 3]);
-            double y = Double.Parse(values[values.Length - 2]);
+            double x = double.Parse(values[values.Length - 3], CultureInfo.InvariantCulture);
+            double y = Double.Parse(values[values.Length - 2], CultureInfo.InvariantCulture);
             double z = 0;
             var anglescord = Angles.FromCoordinates(x, y, z);
             _arduinoService.SendAngles(anglescord);
@@ -107,8 +109,8 @@ public partial class MainWindow : Window
             _arduinoService.SendAngles(anglescord);
             anglescord = Angles.FromCoordinates(18, 0, 2);
             _arduinoService.SendAngles(anglescord);
-            x = Double.Parse(values[values.Length - 6]);
-            y = Double.Parse(values[values.Length - 5]);
+            x = Double.Parse(values[values.Length - 6], CultureInfo.InvariantCulture);
+            y = Double.Parse(values[values.Length - 5], CultureInfo.InvariantCulture);
             anglescord = Angles.FromCoordinates(x, y, 0);
             _arduinoService.SendAngles(anglescord);
             anglescord = Angles.FromCoordinates(x, y, -7);

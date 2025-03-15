@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp23.Models;
@@ -12,11 +13,11 @@ public partial class MainViewModel : ObservableObject
     ];
 
     public string XCorTxt { get; set ; }
-    public double XCor => Convert.ToDouble(XCorTxt);
+    public double XCor => Convert.ToDouble(XCorTxt, CultureInfo.InvariantCulture);
     public string YCorTxt { get; set; }
-    public double YCor => Convert.ToDouble(YCorTxt);
+    public double YCor => Convert.ToDouble(YCorTxt, CultureInfo.InvariantCulture);
     public String ZCorTxt { get; set; }
-    public double ZCor => Convert.ToDouble(ZCorTxt);
+    public double ZCor => Convert.ToDouble(ZCorTxt, CultureInfo.InvariantCulture);
     public MainViewModel()
     {
         XCorTxt = "5";
