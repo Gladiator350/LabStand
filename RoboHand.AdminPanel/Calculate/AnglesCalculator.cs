@@ -44,7 +44,7 @@ public class AnglesCalculator
         };
     }
 
-    public static bool Check(Angles angles, Variant variant) // l1, l2, X1, Y1, Z1, X2, Y2, Z2
+    public static string Check(Angles angles, Variant variant) // l1, l2, X1, Y1, Z1, X2, Y2, Z2
     {
         const int pincers = 11;
         var length1 = variant.L1 * Math.Cos((angles.Alpha - 90) * Math.PI / 180.0) +
@@ -57,12 +57,10 @@ public class AnglesCalculator
                     pincers * Math.Sin((angles.Beta - 90 - angles.Alpha + 90 - angles.Gamma + 90) * Math.PI / 180.0);
         const double tolerance = 0.25;
         Console.WriteLine(length1);
-        Console.WriteLine($"X:{xcor1} Y:{ycor1} Z:{zcor1}");
-        bool check = Math.Abs(xcor1 - variant.X1) < tolerance &&
-                     Math.Abs(ycor1 - variant.Y1) < tolerance &&
-                     Math.Abs(zcor1 - variant.Z1) < tolerance;
-
-
+        Console.WriteLine($"Вариант {variant.Id} {(Math.Abs(xcor1 - variant.X1) < tolerance && Math.Abs(ycor1 - variant.Y1) < tolerance && Math.Abs(zcor1 - variant.Z1) < tolerance)} X:{xcor1} Y:{ycor1} Z:{zcor1}");
+        string check = (Math.Abs(xcor1 - variant.X1) < tolerance &&
+                        Math.Abs(ycor1 - variant.Y1) < tolerance &&
+                        Math.Abs(zcor1 - variant.Z1) < tolerance) + $" X:{xcor1} Y:{ycor1} Z:{zcor1} ";
         return check;
     }
 }
